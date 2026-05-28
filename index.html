@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Guardiões da Mente Segura</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#eef3f8;
+margin:0;
+padding:0;
+color:#003366;
+}
+
+header{
+background:#003366;
+color:white;
+padding:30px;
+text-align:center;
+}
+
+header img{
+width:100%;
+max-height:300px;
+object-fit:cover;
+border-radius:20px;
+margin-bottom:20px;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+padding:20px;
+margin-bottom:25px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+}
+
+.personagem{
+text-align:center;
+}
+
+.personagem img{
+width:160px;
+height:160px;
+object-fit:contain;
+margin-bottom:10px;
+}
+
+.personagem h2{
+margin:10px 0;
+}
+
+button{
+background:#003366;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+margin-top:10px;
+}
+
+button:hover{
+background:#0055aa;
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:10px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+.quiz-option{
+display:block;
+background:#f0f0f0;
+padding:12px;
+border-radius:10px;
+margin-bottom:10px;
+cursor:pointer;
+}
+
+.quiz-option:hover{
+background:#dcecff;
+}
+
+.correct{
+background:#c8f7c5 !important;
+}
+
+.wrong{
+background:#ffc9c9 !important;
+}
+
+.pontos{
+font-size:22px;
+font-weight:bold;
+text-align:center;
+margin-top:20px;
+}
+
+.certificado{
+text-align:center;
+padding:30px;
+background:white;
+border-radius:20px;
+margin-top:30px;
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<img src="assets/capa-guardiões.png">
+
+<h1>Guardiões da Mente Segura</h1>
+
+<p>
+Campanha de Segurança Psicossocial • SESMT Renaux
+</p>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Identificação do Participante</h2>
+
+<input type="text" id="nome" placeholder="Nome">
+
+<input type="text" id="setor" placeholder="Setor">
+
+<select id="turno">
+<option>Manhã</option>
+<option>Tarde</option>
+<option>Noite</option>
+</select>
+
+<button onclick="salvarParticipante()">
+Entrar no jogo
+</button>
+
+</div>
+
+<div class="grid">
+
+<div class="card personagem">
+
+<img src="assets/latito.png">
+
+<h2>Latito</h2>
+
+<p>
+Energia Segura • Fadiga e Sono
+</p>
+
+<button onclick="gerarMissao('latito')">
+Gerar missão
+</button>
+
+<div id="missao-latito"></div>
+
+</div>
+
+<div class="card personagem">
+
+<img src="assets/kadu.png">
+
+<h2>Kadu</h2>
+
+<p>
+Equilíbrio Emocional • Apoio e Respeito
+</p>
+
+<button onclick="gerarMissao('kadu')">
+Gerar missão
+</button>
+
+<div id="missao-kadu"></div>
+
+</div>
+
+<div class="card personagem">
+
+<img src="assets/renauxito.png">
+
+<h2>Renauxito</h2>
+
+<p>
+Foco e Atenção Plena
+</p>
+
+<button onclick="gerarMissao('renauxito')">
+Gerar missão
+</button>
+
+<div id="missao-renauxito"></div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Quiz da Segurança Mental</h2>
+
+<h3 id="quizPergunta"></h3>
+
+<div id="quizOpcoes"></div>
+
+<button onclick="novoQuiz()">
+Clique para próxima pergunta
+</button>
+
+</div>
+
+<div class="pontos">
+
+Pontuação:
+<span id="pontuacao">0</span>
+
+</div>
+
+<div class="certificado" id="certificado">
+
+<h1>CERTIFICADO</h1>
+
+<p>
+Certificamos que
+</p>
+
+<h2 id="certNome"></h2>
+
+<p>
+participou da campanha
+<b>Guardiões da Mente Segura</b>
+</p>
+
+<p>
+SESMT Renaux
+</p>
+
+<button onclick="window.print()">
+Imprimir Certificado
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let participante = "";
+
+let pontos = 0;
+
+const missoes = {
+
+latito:[
+"Faça uma pausa para hidratação e incentive dois colegas.",
+"Observe sinais de fadiga na equipe e comunique ao líder.",
+"Evite uso de celular durante atividade operacional.",
+"Converse com a equipe sobre descanso e atenção."
+],
+
+kadu:[
+"Pergunte a três colegas como eles estão hoje.",
+"Compartilhe uma mensagem positiva no setor.",
+"Ajude a reduzir um conflito com calma e respeito.",
+"Incentive um colega a procurar apoio quando necessário."
+],
+
+renauxito:[
+"Pratique 1 minuto de atenção plena antes da atividade.",
+"Observe riscos antes de iniciar sua tarefa.",
+"Reporte uma condição insegura.",
+"Reforce a importância da percepção de risco."
+]
+
+};
+
+const dds = {
+
+latito:
+" DDS: O cansaço reduz atenção e aumenta o risco de acidentes. Pausas, hidratação e descanso também salvam vidas.",
+
+kadu:
+" DDS: Apoio emocional e respeito fortalecem equipes seguras e saudáveis.",
+
+renauxito:
+" DDS: Atenção plena reduz distrações e aumenta a percepção de risco."
+};
+
+const quizzes = [
+
+{
+pergunta:"O excesso de fadiga pode aumentar:",
+opcoes:["A produtividade","A atenção","O risco de acidentes","A velocidade segura"],
+correta:2
+},
+
+{
+pergunta:"Quando um colega apresenta sinais de estresse intenso:",
+opcoes:["Ignorar","Pressionar mais","Apoiar e comunicar liderança","Fazer brincadeiras"],
+correta:2
+},
+
+{
+pergunta:"A atenção plena ajuda a:",
+opcoes:["Prevenir acidentes","Gerar distrações","Ignorar riscos","Evitar EPI"],
+correta:0
+},
+
+{
+pergunta:"O diálogo seguro entre equipes ajuda a:",
+opcoes:["Gerar conflitos","Melhorar integração","Reduzir comunicação","Criar distrações"],
+correta:1
+},
+
+{
+pergunta:"Fadiga operacional deve ser tratada como:",
+opcoes:["Fraqueza","Problema sem importância","Risco para segurança","Algo normal"],
+correta:2
+}
+
+];
+
+function salvarParticipante(){
+
+participante =
+document.getElementById("nome").value;
+
+if(participante==""){
+alert("Digite seu nome.");
+return;
+}
+
+alert("Bem-vindo ao Guardiões da Mente Segura!");
+
+}
+
+function gerarMissao(tipo){
+
+if(participante==""){
+alert("Preencha seu nome primeiro.");
+return;
+}
+
+const lista = missoes[tipo];
+
+const missao =
+lista[Math.floor(Math.random()*lista.length)];
+
+document.getElementById("missao-"+tipo).innerHTML =
+"<p><b>Missão:</b> "+missao+"</p><p>"+dds[tipo]+"</p>";
+
+adicionarPontos(10);
+
+}
+
+function adicionarPontos(valor){
+
+pontos += valor;
+
+document.getElementById("pontuacao").innerText =
+pontos;
+
+if(pontos >= 100){
+
+document.getElementById("certificado").style.display =
+"block";
+
+document.getElementById("certNome").innerText =
+participante;
+
+}
+
+}
+
+function novoQuiz(){
+
+const quiz =
+quizzes[Math.floor(Math.random()*quizzes.length)];
+
+document.getElementById("quizPergunta").innerText =
+quiz.pergunta;
+
+const opcoesDiv =
+document.getElementById("quizOpcoes");
+
+opcoesDiv.innerHTML = "";
+
+quiz.opcoes.forEach((opcao,index)=>{
+
+const botao =
+document.createElement("div");
+
+botao.className =
+"quiz-option";
+
+botao.innerText =
+opcao;
+
+botao.onclick = ()=>{
+
+if(index == quiz.correta){
+
+botao.classList.add("correct");
+
+adicionarPontos(20);
+
+}else{
+
+botao.classList.add("wrong");
+
+}
+
+};
+
+opcoesDiv.appendChild(botao);
+
+});
+
+}
+
+novoQuiz();
+
+</script>
+
+</body>
+</html>
