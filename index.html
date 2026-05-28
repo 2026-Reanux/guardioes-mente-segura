@@ -1,455 +1,131 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guardiões da Mente Segura</title>
 
-<title>Guardiões da Mente Segura</title>
-
-<style>
-
-body{
-font-family:Arial,sans-serif;
-background:#eef3f8;
-margin:0;
-padding:0;
-color:#003366;
-}
-
-header{
-background:#003366;
-color:white;
-padding:30px;
-text-align:center;
-}
-
-header img{
-width:100%;
-max-height:300px;
-object-fit:cover;
-border-radius:20px;
-margin-bottom:20px;
-}
-
-.container{
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
-
-.card{
-background:white;
-border-radius:20px;
-padding:20px;
-margin-bottom:25px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
-}
-
-.personagem{
-text-align:center;
-}
-
-.personagem img{
-width:160px;
-height:160px;
-object-fit:contain;
-margin-bottom:10px;
-}
-
-.personagem h2{
-margin:10px 0;
-}
-
-button{
-background:#003366;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:10px;
-cursor:pointer;
-font-weight:bold;
-margin-top:10px;
-}
-
-button:hover{
-background:#0055aa;
-}
-
-input,select{
-width:100%;
-padding:12px;
-margin-top:10px;
-margin-bottom:10px;
-border-radius:10px;
-border:1px solid #ccc;
-}
-
-.quiz-option{
-display:block;
-background:#f0f0f0;
-padding:12px;
-border-radius:10px;
-margin-bottom:10px;
-cursor:pointer;
-}
-
-.quiz-option:hover{
-background:#dcecff;
-}
-
-.correct{
-background:#c8f7c5 !important;
-}
-
-.wrong{
-background:#ffc9c9 !important;
-}
-
-.pontos{
-font-size:22px;
-font-weight:bold;
-text-align:center;
-margin-top:20px;
-}
-
-.certificado{
-text-align:center;
-padding:30px;
-background:white;
-border-radius:20px;
-margin-top:30px;
-display:none;
-}
-
-</style>
+  <style>
+    :root{--azul:#003366;--azul2:#0b5cad;--verde:#1f9d55;--laranja:#f59e0b;--vermelho:#dc2626;--texto:#1f2937;--branco:#fff;}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;}
+    body{background:linear-gradient(135deg,#e8f1ff,#fff);color:var(--texto);min-height:100vh;padding:20px;}
+    .container{max-width:1150px;margin:auto;}
+    header{background:linear-gradient(135deg,var(--azul),var(--azul2));color:white;border-radius:22px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,.18);margin-bottom:25px;overflow:hidden;}
+    .capa{width:100%;max-height:420px;object-fit:cover;display:block;background:white;}
+    .header-content{padding:30px;}
+    header h1{font-size:2.2rem;margin-bottom:10px;}
+    header p{font-size:1.05rem;opacity:.95;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-bottom:25px;}
+    .card{background:white;border-radius:20px;padding:22px;box-shadow:0 8px 20px rgba(0,0,0,.10);border:1px solid #e5e7eb;}
+    .card h2,.card h3{color:var(--azul);margin-bottom:12px;}
+    label{display:block;font-weight:bold;margin-top:12px;margin-bottom:6px;}
+    input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid #cbd5e1;font-size:1rem;}
+    textarea{min-height:90px;resize:vertical;}
+    button{background:var(--azul);color:white;border:none;border-radius:12px;padding:12px 16px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:14px;transition:.2s;}
+    button:hover{transform:translateY(-2px);background:var(--azul2);}
+    .btn-green{background:var(--verde);} .btn-orange{background:var(--laranja);} .btn-red{background:var(--vermelho);}
+    .mascote-img{width:150px;height:150px;object-fit:contain;display:block;margin:0 auto 12px auto;background:#f8fafc;border-radius:22px;}
+    .emoji-mascote{width:150px;height:150px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px auto;background:#f8fafc;border-radius:22px;font-size:4.5rem;}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#dbeafe;color:var(--azul);font-size:.85rem;font-weight:bold;margin-bottom:10px;}
+    .mission-box{background:#f8fafc;border-left:6px solid var(--azul);padding:16px;border-radius:12px;margin-top:12px;line-height:1.5;}
+    .dds-box{background:#eaf4ff;padding:12px;border-radius:10px;margin:12px 0;border-left:5px solid #003366;line-height:1.5;}
+    .score{font-size:1.5rem;font-weight:bold;color:var(--verde);margin-bottom:8px;}
+    .ranking-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8fafc;border-radius:12px;margin-bottom:8px;border:1px solid #e5e7eb;gap:12px;}
+    .emoji-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+    .emoji-btn{background:#f1f5f9;color:#111827;border:2px solid transparent;font-size:1.8rem;padding:10px 14px;border-radius:14px;}
+    .emoji-btn:hover,.emoji-btn.active{border-color:var(--azul);background:#dbeafe;}
+    .quiz-option{display:block;background:#f8fafc;color:var(--texto);width:100%;text-align:left;border:1px solid #e5e7eb;margin-top:8px;font-weight:normal;}
+    .quiz-option.correct{background:#dcfce7;border-color:var(--verde);} .quiz-option.wrong{background:#fee2e2;border-color:var(--vermelho);}
+    .recognition-list p,.log-item{background:#f8fafc;padding:12px;border-radius:12px;margin-bottom:8px;border-left:5px solid var(--verde);line-height:1.45;}
+    table{width:100%;border-collapse:collapse;font-size:.88rem;} th,td{border:1px solid #e5e7eb;padding:8px;text-align:left;vertical-align:top;} th{background:#eff6ff;color:var(--azul);}
+    .scroll{max-height:360px;overflow:auto;} .footer{text-align:center;margin-top:25px;color:#64748b;font-size:.9rem;}
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <header>
+      <img class="capa" src="assets/capa-guardioes.png" alt="Guardiões da Segurança Renaux" onerror="this.style.display='none'">
+      <div class="header-content">
+        <h1>🛡️ Guardiões da Mente Segura</h1>
+        <p>Segurança também é cuidar da mente • Saúde Mental • Fatores Psicossociais • NR-01</p>
+      </div>
+    </header>
 
-<header>
+    <section class="grid">
+      <div class="card">
+        <h2>Identificação da Equipe</h2>
+        <label for="nome">Nome do participante</label><input id="nome" placeholder="Digite seu nome" />
+        <label for="contrato">Contrato</label><select id="contrato"></select>
+        <label for="setor">Setor</label>
+        <select id="setor"><option>Limpeza</option><option>Administrativo</option><option>Logística</option><option>Manutenção</option><option>Operacional</option><option>Expedição</option></select>
+        <label for="turno">Turno</label>
+        <select id="turno"><option>Manhã</option><option>Tarde</option><option>Noite</option><option>Administrativo</option></select>
+        <button onclick="salvarParticipante()">Entrar no jogo</button>
+        <p id="boasVindas" style="margin-top:12px;font-weight:bold;"></p>
+      </div>
 
-<img src="assets/capa-guardiões.png">
+      <div class="card"><h2>Pontuação da Equipe</h2><p>Equipe atual:</p><p id="equipeAtual" class="score">---</p><p>Total de pontos:</p><p id="pontosEquipe" class="score">0 pts</p></div>
 
-<h1>Guardiões da Mente Segura</h1>
+      <div class="card">
+        <h2>Área ADM</h2><p>Visualize quem fez, contrato, setor, turno, operação e pontuação.</p>
+        <button onclick="mostrarAdm()">Atualizar painel ADM</button>
+        <button class="btn-green" onclick="exportarCSV()">Exportar CSV</button>
+        <button class="btn-orange" onclick="gerarCertificado()">📜 Emitir Certificado</button>
+        <button class="btn-red" onclick="resetarJogo()">Zerar dados</button>
+      </div>
+    </section>
 
-<p>
-Campanha de Segurança Psicossocial • SESMT Renaux
-</p>
+    <section class="grid">
+      <div class="card"><img class="mascote-img" src="assets/latito.png" alt="Latito" onerror="this.outerHTML='<div class=&quot;emoji-mascote&quot;>🚜</div>'"><span class="badge">Latito • Energia Segura</span><h3>Fadiga e Sono</h3><p>Missões para reduzir cansaço, exaustão e perda de atenção.</p><button class="btn-orange" onclick="gerarMissao('latito')">Gerar missão</button></div>
+      <div class="card"><img class="mascote-img" src="assets/kadu.png" alt="Kadu" onerror="this.outerHTML='<div class=&quot;emoji-mascote&quot;>🟢</div>'"><span class="badge">Kadu • Equilíbrio Emocional</span><h3>Estresse e Apoio</h3><p>Missões para fortalecer respeito, acolhimento e cuidado coletivo.</p><button class="btn-green" onclick="gerarMissao('kadu')">Gerar missão</button></div>
+      <div class="card"><img class="mascote-img" src="assets/renauxito.png" alt="Renauxito" onerror="this.outerHTML='<div class=&quot;emoji-mascote&quot;>🔵</div>'"><span class="badge">Renauxito • Atenção Plena</span><h3>Foco e Segurança</h3><p>Missões para melhorar percepção de risco e comportamento seguro.</p><button onclick="gerarMissao('renauxito')">Gerar missão</button></div>
+    </section>
 
-</header>
+    <section class="card"><h2>Missão do Dia</h2><div id="missaoAtual" class="mission-box">Clique em um mascote para gerar uma missão.</div><button class="btn-green" onclick="concluirMissao()">Confirmar missão concluída</button></section>
 
-<div class="container">
+    <section class="grid" style="margin-top:25px;">
+      <div class="card"><h2>Check-in: Como estou hoje?</h2><p>Escolha uma opção. O objetivo é cuidar da equipe sem exposição negativa.</p><div class="emoji-row"><button class="emoji-btn" onclick="registrarCheckin('Excelente', this)">😀</button><button class="emoji-btn" onclick="registrarCheckin('Bem', this)">🙂</button><button class="emoji-btn" onclick="registrarCheckin('Cansado', this)">😐</button><button class="emoji-btn" onclick="registrarCheckin('Sobrecarregado', this)">😓</button><button class="emoji-btn" onclick="registrarCheckin('Exausto', this)">😴</button></div><p id="checkinMsg" style="margin-top:12px;font-weight:bold;"></p></div>
+      <div class="card"><h2>Quiz da Segurança Mental</h2><p id="quizPergunta"></p><div id="quizOpcoes"></div><button id="btnProximaPergunta" onclick="novoQuiz()">Clique para próxima pergunta</button></div>
+    </section>
 
-<div class="card">
+    <section class="grid" style="margin-top:25px;">
+      <div class="card"><h2>Mural “Valeu, Parceiro!”</h2><label for="colega">Nome do colega reconhecido</label><input id="colega" placeholder="Ex.: João" /><label for="mensagemReconhecimento">Mensagem de reconhecimento</label><textarea id="mensagemReconhecimento" placeholder="Ex.: Obrigado por me apoiar na atividade segura."></textarea><button class="btn-green" onclick="registrarReconhecimento()">Registrar reconhecimento</button></div>
+      <div class="card"><h2>Reconhecimentos Recentes</h2><div id="listaReconhecimentos" class="recognition-list"></div></div>
+    </section>
 
-<h2>Identificação do Participante</h2>
+    <section class="grid" style="margin-top:25px;">
+      <div class="card"><h2>Ranking das Equipes</h2><div id="ranking"></div></div>
+      <div class="card"><h2>Painel ADM — Registros</h2><div class="scroll"><table><thead><tr><th>Data</th><th>Nome</th><th>Contrato</th><th>Setor</th><th>Turno</th><th>Operação</th><th>Pontos</th></tr></thead><tbody id="admBody"></tbody></table></div></div>
+    </section>
 
-<input type="text" id="nome" placeholder="Nome">
-
-<input type="text" id="setor" placeholder="Setor">
-
-<select id="turno">
-<option>Manhã</option>
-<option>Tarde</option>
-<option>Noite</option>
-</select>
-
-<button onclick="salvarParticipante()">
-Entrar no jogo
-</button>
-
-</div>
-
-<div class="grid">
-
-<div class="card personagem">
-
-<img src="assets/latito.png">
-
-<h2>Latito</h2>
-
-<p>
-Energia Segura • Fadiga e Sono
-</p>
-
-<button onclick="gerarMissao('latito')">
-Gerar missão
-</button>
-
-<div id="missao-latito"></div>
-
-</div>
-
-<div class="card personagem">
-
-<img src="assets/kadu.png">
-
-<h2>Kadu</h2>
-
-<p>
-Equilíbrio Emocional • Apoio e Respeito
-</p>
-
-<button onclick="gerarMissao('kadu')">
-Gerar missão
-</button>
-
-<div id="missao-kadu"></div>
-
-</div>
-
-<div class="card personagem">
-
-<img src="assets/renauxito.png">
-
-<h2>Renauxito</h2>
-
-<p>
-Foco e Atenção Plena
-</p>
-
-<button onclick="gerarMissao('renauxito')">
-Gerar missão
-</button>
-
-<div id="missao-renauxito"></div>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>Quiz da Segurança Mental</h2>
-
-<h3 id="quizPergunta"></h3>
-
-<div id="quizOpcoes"></div>
-
-<button onclick="novoQuiz()">
-Clique para próxima pergunta
-</button>
-
-</div>
-
-<div class="pontos">
-
-Pontuação:
-<span id="pontuacao">0</span>
-
-</div>
-
-<div class="certificado" id="certificado">
-
-<h1>CERTIFICADO</h1>
-
-<p>
-Certificamos que
-</p>
-
-<h2 id="certNome"></h2>
-
-<p>
-participou da campanha
-<b>Guardiões da Mente Segura</b>
-</p>
-
-<p>
-SESMT Renaux
-</p>
-
-<button onclick="window.print()">
-Imprimir Certificado
-</button>
-
-</div>
-
-</div>
+    <p class="footer">Campanha Guardiões da Mente Segura • SESMT • Renaux</p>
+  </div>
 
 <script>
-
-let participante = "";
-
-let pontos = 0;
-
-const missoes = {
-
-latito:[
-"Faça uma pausa para hidratação e incentive dois colegas.",
-"Observe sinais de fadiga na equipe e comunique ao líder.",
-"Evite uso de celular durante atividade operacional.",
-"Converse com a equipe sobre descanso e atenção."
-],
-
-kadu:[
-"Pergunte a três colegas como eles estão hoje.",
-"Compartilhe uma mensagem positiva no setor.",
-"Ajude a reduzir um conflito com calma e respeito.",
-"Incentive um colega a procurar apoio quando necessário."
-],
-
-renauxito:[
-"Pratique 1 minuto de atenção plena antes da atividade.",
-"Observe riscos antes de iniciar sua tarefa.",
-"Reporte uma condição insegura.",
-"Reforce a importância da percepção de risco."
-]
-
-};
-
-const dds = {
-
-latito:
-" DDS: O cansaço reduz atenção e aumenta o risco de acidentes. Pausas, hidratação e descanso também salvam vidas.",
-
-kadu:
-" DDS: Apoio emocional e respeito fortalecem equipes seguras e saudáveis.",
-
-renauxito:
-" DDS: Atenção plena reduz distrações e aumenta a percepção de risco."
-};
-
-const quizzes = [
-
-{
-pergunta:"O excesso de fadiga pode aumentar:",
-opcoes:["A produtividade","A atenção","O risco de acidentes","A velocidade segura"],
-correta:2
-},
-
-{
-pergunta:"Quando um colega apresenta sinais de estresse intenso:",
-opcoes:["Ignorar","Pressionar mais","Apoiar e comunicar liderança","Fazer brincadeiras"],
-correta:2
-},
-
-{
-pergunta:"A atenção plena ajuda a:",
-opcoes:["Prevenir acidentes","Gerar distrações","Ignorar riscos","Evitar EPI"],
-correta:0
-},
-
-{
-pergunta:"O diálogo seguro entre equipes ajuda a:",
-opcoes:["Gerar conflitos","Melhorar integração","Reduzir comunicação","Criar distrações"],
-correta:1
-},
-
-{
-pergunta:"Fadiga operacional deve ser tratada como:",
-opcoes:["Fraqueza","Problema sem importância","Risco para segurança","Algo normal"],
-correta:2
-}
-
-];
-
-function salvarParticipante(){
-
-participante =
-document.getElementById("nome").value;
-
-if(participante==""){
-alert("Digite seu nome.");
-return;
-}
-
-alert("Bem-vindo ao Guardiões da Mente Segura!");
-
-}
-
-function gerarMissao(tipo){
-
-if(participante==""){
-alert("Preencha seu nome primeiro.");
-return;
-}
-
-const lista = missoes[tipo];
-
-const missao =
-lista[Math.floor(Math.random()*lista.length)];
-
-document.getElementById("missao-"+tipo).innerHTML =
-"<p><b>Missão:</b> "+missao+"</p><p>"+dds[tipo]+"</p>";
-
-adicionarPontos(10);
-
-}
-
-function adicionarPontos(valor){
-
-pontos += valor;
-
-document.getElementById("pontuacao").innerText =
-pontos;
-
-if(pontos >= 100){
-
-document.getElementById("certificado").style.display =
-"block";
-
-document.getElementById("certNome").innerText =
-participante;
-
-}
-
-}
-
-function novoQuiz(){
-
-const quiz =
-quizzes[Math.floor(Math.random()*quizzes.length)];
-
-document.getElementById("quizPergunta").innerText =
-quiz.pergunta;
-
-const opcoesDiv =
-document.getElementById("quizOpcoes");
-
-opcoesDiv.innerHTML = "";
-
-quiz.opcoes.forEach((opcao,index)=>{
-
-const botao =
-document.createElement("div");
-
-botao.className =
-"quiz-option";
-
-botao.innerText =
-opcao;
-
-botao.onclick = ()=>{
-
-if(index == quiz.correta){
-
-botao.classList.add("correct");
-
-adicionarPontos(20);
-
-}else{
-
-botao.classList.add("wrong");
-
-}
-
-};
-
-opcoesDiv.appendChild(botao);
-
-});
-
-}
-
-novoQuiz();
-
+const contratos=["AERIS ASSIS SP","AMBEV AGUDOS - SP","AMBEV ANÁPOLIS - GO","AMBEV AQUIDAUANA","AMBEV CANACARI","AMBEV COCA COLA MARÍLIA - SP","AMBEV CUIABÁ - MT","AMBEV ESTÂNCIA","AMBEV JAGUARIÚNA - SP","AMBEV MACACU","AMBEV NOVA RIO - RJ","AMBEV PIRAÍ - RJ","AMBEV VIAMÃO","CROWN ESTÂNCIA","AMBEV TERESINA","AMBEV JUNDIAÍ","ANDINA RIBEIRÃO PRETO - SP","ANDINA RIO DE JANEIRO - RJ","ARTM PRÊMIOS SUAPE","BALL RECIFE","BALL JACAREÍ","BRASILIT MANUTENÇÃO","BRASILIT FACILITIES","BRASILIT RECORTE","BRASILIT CAPIVARI","CANPACK ITUMBIARA","CANPACK MARACANAÚ","CNC - COMPANHIA NACIONAL DE CIMENTO","COCA COLA CENPA BELÉM - PA","COCA COLA PORTO ALEGRE","CROWN IN HOUSE RIO VERDE","CROWN MANAUS","CROWN RIO VERDE","CROWN TERESINA - PI","CROWN UBERABA - MG","DESKONTÃO CASA AMARELA","DESKONTÃO CEASA","DESKONTÃO IMBIRIBEIRA","EAS INDUSTRIAL","FEMSA CURITIBA","FEMSA ITABIRITO","FILIAL SP","GRI","HAIRFLY - ABREU E LIMA - PE","HEINEKEN BEBIDAS","HEINEKEN CAJÁS","HEINEKEN PACATUBA","HEINEKEN PASSOS","IMERYS QUIXERÉ - CE","MOVECTA SUAPE","NC ENERGIA SA","PETRÓPOLIS BOITUVA","PETRÓPOLIS UBERABA","PLACO FEIRA DE SANTANA","SANTA LUZIA ALAGOAS","STAMPA","SEDE","SOLAR BELÉM - PA","SOLAR MACAÍBA","SOLAR MUCURI","SOLAR MARACANAÚ","SOLAR SÃO LUÍS","TORRECID","VÁRZEA GRANDE - MT","VTC LOG","CONE DE WARTSILA","WEBER MACAÍBA"];
+const missoes={latito:["Beba água e incentive dois colegas a se hidratarem durante o turno.","Faça uma pausa ativa rápida e convide um colega para participar.","Observe sinais de fadiga na equipe e comunique ao líder caso perceba risco.","Reforce com a equipe a importância de dormir bem antes do trabalho.","Oriente um colega sobre o risco de usar celular durante atividade operacional."],kadu:["Pergunte a três colegas como eles estão hoje e pratique escuta respeitosa.","Agradeça publicamente um colega que ajudou a equipe.","Ajude a reduzir um conflito operacional com postura calma e respeitosa.","Incentive um colega sob pressão a pedir apoio ao líder ou ao SESMT.","Compartilhe uma atitude positiva no mural “Valeu, Parceiro!”."],renauxito:["Antes de iniciar a atividade, confira o EPI de um colega e peça que ele confira o seu.","Identifique um risco na área e comunique ao líder antes que vire acidente.","Reforce a sinalização de uma área ou rota de circulação.","Pratique 1 minuto de atenção plena antes de iniciar uma atividade crítica.","Reporte um quase acidente ou condição insegura observada no setor."]};
+const quizzes=[{pergunta:"O excesso de fadiga pode aumentar:",opcoes:["A produtividade","A atenção","O risco de acidentes","A velocidade segura"],correta:2},{pergunta:"Quando um colega apresenta sinais de estresse intenso, o mais adequado é:",opcoes:["Ignorar","Pressionar mais","Apoiar e comunicar a liderança quando necessário","Fazer brincadeiras"],correta:2},{pergunta:"A atenção plena no trabalho ajuda a:",opcoes:["Prevenir acidentes","Aumentar distrações","Reduzir percepção de risco","Evitar o uso de EPI"],correta:0},{pergunta:"Ao perceber um quase acidente, o correto é:",opcoes:["Não comentar","Esperar acontecer de novo","Reportar e tratar preventivamente","Culpar alguém imediatamente"],correta:2},{pergunta:"A saúde mental no trabalho influencia:",opcoes:["Somente o humor","Somente o RH","Segurança, produtividade e comportamento","Apenas afastamentos"],correta:2},{pergunta:"Quando percebemos um colega emocionalmente abalado devemos:",opcoes:["Ignorar","Expor o colega","Apoiar e comunicar liderança se necessário","Fazer brincadeiras"],correta:2},{pergunta:"O excesso de pressão emocional pode causar:",opcoes:["Mais atenção","Redução de riscos","Distrações e acidentes","Maior foco operacional"],correta:2},{pergunta:"Uma equipe segura é aquela que:",opcoes:["Compete entre si","Trabalha isolada","Cuida uns dos outros","Evita comunicação"],correta:2},{pergunta:"Segurança também é cuidar:",opcoes:["Somente dos equipamentos","Da mente e das pessoas","Apenas dos indicadores","Somente da produção"],correta:1},{pergunta:"A atenção plena ajuda a:",opcoes:["Reduzir percepção de risco","Melhorar percepção e prevenção","Ignorar distrações","Aumentar fadiga"],correta:1},{pergunta:"O diálogo entre equipes ajuda a:",opcoes:["Evitar prevenção","Melhorar integração e segurança","Gerar conflitos","Diminuir foco"],correta:1},{pergunta:"Fadiga operacional deve ser tratada como:",opcoes:["Fraqueza individual","Risco para a segurança","Assunto sem importância","Problema apenas pessoal"],correta:1},{pergunta:"O cuidado com a mente contribui para:",opcoes:["Mais atenção e prevenção","Mais acidentes","Menos comunicação","Mais improviso"],correta:0},{pergunta:"Quando a equipe se apoia, o ambiente tende a ser:",opcoes:["Mais inseguro","Mais conflituoso","Mais colaborativo e seguro","Mais desorganizado"],correta:2},{pergunta:"Qual atitude fortalece a cultura de segurança?",opcoes:["Esconder desvios","Reportar riscos e apoiar colegas","Evitar DDS","Improvisar para ganhar tempo"],correta:1},{pergunta:"Um bom check-in emocional serve para:",opcoes:["Expor pessoas","Apoiar a prevenção e perceber sinais de fadiga","Substituir atendimento médico","Criar competição"],correta:1},{pergunta:"Se um colega aparenta exaustão, o ideal é:",opcoes:["Ignorar","Orientar, apoiar e comunicar a liderança","Acelerar a tarefa","Fazer piada"],correta:1},{pergunta:"O respeito no ambiente de trabalho ajuda a:",opcoes:["Reduzir conflitos e fortalecer segurança","Aumentar pressão","Diminuir comunicação","Ocultar problemas"],correta:0},{pergunta:"Percepção de risco significa:",opcoes:["Executar sem pensar","Identificar perigos antes que virem acidentes","Aguardar o acidente acontecer","Trabalhar com pressa"],correta:1},{pergunta:"A comunicação segura deve ser:",opcoes:["Clara, respeitosa e preventiva","Agressiva","Omitida","Somente após acidente"],correta:0}];
+let participante=JSON.parse(localStorage.getItem("participante"))||null,pontos=JSON.parse(localStorage.getItem("pontosEquipes"))||{},reconhecimentos=JSON.parse(localStorage.getItem("reconhecimentos"))||[],registros=JSON.parse(localStorage.getItem("registrosAdm"))||[],missaoSelecionada=null;
+function carregarContratos(){const c=document.getElementById("contrato");if(c)c.innerHTML=contratos.map(x=>`<option>${x}</option>`).join("");}
+function salvarParticipante(){const nome=document.getElementById("nome").value.trim(),contrato=document.getElementById("contrato").value,setor=document.getElementById("setor").value,turno=document.getElementById("turno").value;if(!nome){alert("Digite o nome do participante.");return;}participante={nome,contrato,setor,turno,equipe:`${contrato} | ${setor}`};localStorage.setItem("participante",JSON.stringify(participante));if(!pontos[participante.equipe])pontos[participante.equipe]=0;salvarPontos();atualizarTela();registrarADM("Entrada no jogo",0);}
+function gerarMissao(m){if(!validarParticipante())return;const texto=missoes[m][Math.floor(Math.random()*missoes[m].length)];missaoSelecionada={mascote:m,texto};const nomes={latito:"🟠 Latito — Energia Segura",kadu:"🟢 Kadu — Equilíbrio Emocional",renauxito:"🔵 Renauxito — Atenção Plena"};const dds={latito:"DDS: O cansaço reduz a atenção, aumenta distrações e pode gerar acidentes graves. Fazer pausas, hidratar-se e respeitar os limites do corpo também é segurança.",kadu:"DDS: Respeito, apoio emocional e comunicação saudável fortalecem a equipe e reduzem riscos operacionais.",renauxito:"DDS: Atenção plena salva vidas. Pequenas distrações podem gerar grandes acidentes. Segurança começa na percepção do risco."};document.getElementById("missaoAtual").innerHTML=`<strong>${nomes[m]}</strong><div class="dds-box"><strong>${dds[m]}</strong></div>${texto}<br><br><strong>Valor:</strong> 15 pontos.`;}
+function concluirMissao(){if(!validarParticipante())return;if(!missaoSelecionada){alert("Gere uma missão primeiro.");return;}adicionarPontos(15);registrarADM("Missão concluída: "+missaoSelecionada.texto,15);alert("Missão concluída! Sua equipe ganhou 15 pontos.");missaoSelecionada=null;}
+function registrarCheckin(v,b){if(!validarParticipante())return;document.querySelectorAll(".emoji-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");adicionarPontos(5);registrarADM("Check-in: "+v,5);document.getElementById("checkinMsg").innerText=`Check-in registrado: ${v}. Equipe ganhou 5 pontos.`;}
+function novoQuiz(){const q=quizzes[Math.floor(Math.random()*quizzes.length)],p=document.getElementById("quizPergunta"),o=document.getElementById("quizOpcoes");if(!p||!o)return;p.innerText=q.pergunta;o.innerHTML="";q.opcoes.forEach((op,i)=>{const b=document.createElement("button");b.className="quiz-option";b.innerText=op;b.onclick=()=>responderQuiz(b,i===q.correta,q.pergunta);o.appendChild(b);});}
+function responderQuiz(b,c,p){if(!validarParticipante())return;document.querySelectorAll(".quiz-option").forEach(x=>x.disabled=true);if(c){b.classList.add("correct");adicionarPontos(10);registrarADM("Quiz correto: "+p,10);alert("Resposta correta! Sua equipe ganhou 10 pontos.");}else{b.classList.add("wrong");registrarADM("Quiz incorreto: "+p,0);alert("Resposta incorreta. Reflita sobre o tema e tente novamente.");}}
+function registrarReconhecimento(){if(!validarParticipante())return;const colega=document.getElementById("colega").value.trim(),msg=document.getElementById("mensagemReconhecimento").value.trim();if(!colega||!msg){alert("Preencha o nome do colega e a mensagem.");return;}reconhecimentos.unshift({de:participante.nome,para:colega,mensagem:msg,equipe:participante.equipe,data:new Date().toLocaleString("pt-BR")});reconhecimentos=reconhecimentos.slice(0,10);localStorage.setItem("reconhecimentos",JSON.stringify(reconhecimentos));adicionarPontos(8);registrarADM("Reconhecimento para "+colega,8);document.getElementById("colega").value="";document.getElementById("mensagemReconhecimento").value="";atualizarReconhecimentos();alert("Reconhecimento registrado! Sua equipe ganhou 8 pontos.");}
+function gerarCertificado(){if(!participante){alert("Preencha sua identificação primeiro.");return;}const pts=pontos[participante.equipe]||0,j=window.open("","_blank");j.document.write(`<html><head><title>Certificado</title><style>body{font-family:Arial;text-align:center;padding:50px;background:#f8fafc;color:#003366}.cert{border:8px solid #003366;border-radius:22px;padding:40px;background:white}h1{font-size:38px}h2{font-size:28px}p{font-size:20px;line-height:1.6}.slogan{font-size:24px;color:#f59e0b;font-weight:bold}button{padding:12px 20px;border-radius:12px;background:#003366;color:white;border:0;font-weight:bold}</style></head><body><div class="cert"><h1>CERTIFICADO</h1><h2>GUARDIÕES DA MENTE SEGURA</h2><p>Certificamos que <strong>${participante.nome}</strong></p><p>participou da campanha de gamificação em SST, Saúde Mental e Fatores Psicossociais.</p><p><strong>Contrato:</strong> ${participante.contrato}<br><strong>Setor:</strong> ${participante.setor}<br><strong>Turno:</strong> ${participante.turno}<br><strong>Pontuação:</strong> ${pts} pontos</p><p class="slogan">“SEGURANÇA TAMBÉM É CUIDAR DA MENTE”</p><button onclick="window.print()">Imprimir Certificado</button></div></body></html>`);j.document.close();registrarADM("Certificado emitido",0);}
+function adicionarPontos(v){if(!participante)return;if(!pontos[participante.equipe])pontos[participante.equipe]=0;pontos[participante.equipe]+=v;salvarPontos();atualizarTela();}
+function registrarADM(op,pts){if(!participante)return;registros.unshift({data:new Date().toLocaleString("pt-BR"),nome:participante.nome,contrato:participante.contrato,setor:participante.setor,turno:participante.turno,operacao:op,pontos:pts});localStorage.setItem("registrosAdm",JSON.stringify(registros));mostrarAdm();}
+function salvarPontos(){localStorage.setItem("pontosEquipes",JSON.stringify(pontos));}
+function atualizarTela(){if(participante){document.getElementById("boasVindas").innerText=`Bem-vindo(a), ${participante.nome}!`;document.getElementById("equipeAtual").innerText=participante.equipe;document.getElementById("pontosEquipe").innerText=`${pontos[participante.equipe]||0} pts`;document.getElementById("nome").value=participante.nome;document.getElementById("contrato").value=participante.contrato;document.getElementById("setor").value=participante.setor;document.getElementById("turno").value=participante.turno;}atualizarRanking();atualizarReconhecimentos();mostrarAdm();}
+function atualizarRanking(){const r=document.getElementById("ranking");if(!r)return;r.innerHTML="";const ord=Object.entries(pontos).sort((a,b)=>b[1]-a[1]);if(!ord.length){r.innerHTML="<p>Nenhuma equipe pontuou ainda.</p>";return;}ord.forEach(([eq,total],i)=>{r.innerHTML+=`<div class="ranking-item"><strong>${i+1}º — ${eq}</strong><span>${total} pts</span></div>`;});}
+function atualizarReconhecimentos(){const l=document.getElementById("listaReconhecimentos");if(!l)return;l.innerHTML="";if(!reconhecimentos.length){l.innerHTML="<p>Ainda não há reconhecimentos.</p>";return;}reconhecimentos.forEach(x=>{l.innerHTML+=`<div class="log-item"><strong>${x.de}</strong> reconheceu <strong>${x.para}</strong><br>${x.mensagem}<br><small>${x.equipe} • ${x.data}</small></div>`;});}
+function mostrarAdm(){const a=document.getElementById("admBody");if(!a)return;a.innerHTML=registros.map(x=>`<tr><td>${x.data}</td><td>${x.nome}</td><td>${x.contrato}</td><td>${x.setor}</td><td>${x.turno}</td><td>${x.operacao}</td><td>${x.pontos}</td></tr>`).join("");}
+function exportarCSV(){const cab="Data;Nome;Contrato;Setor;Turno;Operacao;Pontos\n",lin=registros.map(x=>[x.data,x.nome,x.contrato,x.setor,x.turno,x.operacao,x.pontos].map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\n"),blob=new Blob([cab+lin],{type:"text/csv;charset=utf-8;"}),link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download="registros_guardioes_mente_segura.csv";link.click();}
+function validarParticipante(){if(!participante){alert("Antes de jogar, preencha a identificação.");return false;}return true;}
+function resetarJogo(){if(!confirm("Deseja zerar todos os dados salvos neste navegador?"))return;localStorage.clear();location.reload();}
+carregarContratos();atualizarTela();novoQuiz();
 </script>
-
 </body>
 </html>
